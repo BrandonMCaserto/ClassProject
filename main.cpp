@@ -256,6 +256,19 @@ void game_one (){
     sprite.setPosition((float) window.getSize().x/2, (float) window.getSize().y/10);
     Mole temp_mole;
 
+    sf::Font font;
+    int fontSize = 50;
+    font.loadFromFile("Apple Chancery.ttf");
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(fontSize);
+    //text.setFillColor(sf::Color::Black);
+    text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+    text.setString("Timer: " + std::to_string(trunc(gameSeconds)));
+    sf::FloatRect textRect = text.getLocalBounds();
+    text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
+    text.setPosition((float) window.getSize().x/5, (float) window.getSize().y/25);
+
     //program loop to keep window open as game is being played
     gameTime = clock.getElapsedTime();
     gameSeconds = gameTime.asSeconds();
@@ -352,6 +365,8 @@ void game_one (){
         for (auto mole :moleList) {
             window.draw(mole.get_sprite());
         }
+        text.setString("Timer: " + std::to_string(trunc(gameSeconds)));
+        window.draw(text);
         window.display();
     }
 };
