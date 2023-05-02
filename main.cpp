@@ -12,6 +12,7 @@
 #include <vector>
 #include <array>
 
+//class for moles being spawned and added to vector
 class Mole {
 private:
     sf::Texture moleTexture;
@@ -42,10 +43,10 @@ public:
         mole_3.setTextureRect(sf::IntRect(25,700,230,210));
         moleSprite.setTexture(moleTexture);
         moleSprite.setTextureRect(sf::IntRect(225,0,225,350));
-        //moleSprite.setScale(sf::Vector2f(0.20f, 0.20f));
         moleRect = small_hole.getLocalBounds();
         small_hole.setOrigin(moleRect.left + moleRect.width/2.0f, moleRect.top  + moleRect.height/2.0f);
     }
+    //function to get mole sprite
     sf::Sprite get_sprite () {
         switch(upTime) {
             case 0:
@@ -97,15 +98,23 @@ public:
                 return moleSprite;
         }
     }
+
+    //function to set mole interaction bounds
     void set_mole_rect (sf::FloatRect float_rect) {
         moleRect = float_rect;
     }
+
+    //function to get mole bounds
     sf::FloatRect get_mole_rect () {
         return moleRect;
     }
+
+    //function to set position to window location
     void set_position (sf::Vector2f windowLocation) {
         moleSprite.setPosition(windowLocation);
     }
+
+    //function to set a random position for mole
     void set_position_random (int window_x, int window_y) {
         std::random_device rd;
         std::mt19937 mt(rd());
@@ -137,17 +146,23 @@ public:
         mole_3.setOrigin(moleRect.left + moleRect.width/2.0f, moleRect.top  + moleRect.height/2.0f);
         mole_3.setPosition((float) x_location, (float) y_location);
     }
+
+    //function to add to mole's uptime
     void add_uptime () {
         upTime ++;
     }
+
+    //function to get mole's uptime
     int get_uptime () {
         return upTime;
     }
 };
 
+//functions before main for handling main menu and game
 void main_menu ();
 void game_one ();
 
+//main loop for opening and closing windows
 int main() {
     while (true) {
         main_menu();
@@ -157,6 +172,7 @@ int main() {
     return 0;
 }
 
+//function for handling main menu
 void main_menu (){
     int windowX = 1000;
     int windowY = 1000;
@@ -177,6 +193,7 @@ void main_menu (){
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
     text.setPosition((float) mainMenu.getSize().x/2, (float) mainMenu.getSize().y/10);
+    //loop of main
     while (mainMenu.isOpen()) {
         sf::Event sfmlEvent;
         while (mainMenu.pollEvent(sfmlEvent)) {
@@ -186,7 +203,6 @@ void main_menu (){
             }
             else if (sfmlEvent.type == sf::Event::Resized) {
                 // resize my view
-                //view.setSize((float) (window.getSize().x), (float) (window.getSize().y));
                 windowX = (int)mainMenu.getSize().x;
                 std::cout << "WindowX: " << windowX << std::endl;
                 std::cout << "View X: " << view.getSize().x << std::endl;
@@ -249,6 +265,7 @@ void game_one (){
     sf::View view = window.getDefaultView();
     window.setVerticalSyncEnabled(true);
 
+    //background image
     sf::Texture texture;
     texture.loadFromFile("grass3.jpg");
     sf::Sprite sprite;
@@ -258,23 +275,23 @@ void game_one (){
     sprite.setPosition((float) window.getSize().x/2, (float) window.getSize().y/10);
     Mole temp_mole;
 
+    //text for time elapsed in top left
     sf::Font font;
     int fontSize = 50;
     font.loadFromFile("Apple Chancery.ttf");
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(fontSize);
-    //text.setFillColor(sf::Color::Black);
     text.setStyle(sf::Text::Bold | sf::Text::Underlined);
     text.setString("Timer: " + std::to_string(trunc(gameSeconds)));
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
     text.setPosition((float) window.getSize().x/5, (float) window.getSize().y/25);
 
+    //text for score in top left
     sf::Text scoreText;
     scoreText.setFont(font);
     scoreText.setCharacterSize(fontSize);
-    //scoreText.setFillColor(sf::Color::Black);
     scoreText.setStyle(sf::Text::Bold | sf::Text::Underlined);
     scoreText.setString("Score: " + std::to_string(trunc(score)));
     sf::FloatRect scoreRect = scoreText.getLocalBounds();
@@ -288,10 +305,12 @@ void game_one (){
     float spawnTick = 0.0;
     while (window.isOpen()) {
         sf::Event sfmlEvent;
+        //code for handling closure of window
         while (window.pollEvent(sfmlEvent)) {
             if(sfmlEvent.type == sfmlEvent.Closed) {
                 window.close();
             }
+            //code for handling resize
             else if (sfmlEvent.type == sf::Event::Resized) {
                 int changeX = (int)window.getSize().x - windowX;
                 int changeY = (int)window.getSize().y - windowY;
@@ -300,13 +319,8 @@ void game_one (){
                 float xScale = (float) windowX / 1000;
                 float yScale = (float) windowY / 1000;
 
-
-                //mole_one.get_sprite().setScale(sf::Vector2f(500, moleScale * yScale));
-                //mole_one.set_mole_rect(mole_one.get_sprite().getLocalBounds());
-                //mole_one.get_sprite().setOrigin(mole_one.get_mole_rect().left + mole_one.get_mole_rect().width/2.0f, mole_one.get_mole_rect().top  + mole_one.get_mole_rect().height/2.0f);
                 view.reset(sf::FloatRect(0, 0, (float) window.getSize().x, (float) window.getSize().y));
                 sprite.setPosition((float) window.getSize().x/2, (float) window.getSize().y/2);
-                //moleSprites[0].move(changeX / 2,  changeY / 2);
             }
         }
 
@@ -346,9 +360,11 @@ void game_one (){
             }
         }
 
+        //calculating time since start
         gameTime = clock.getElapsedTime();
         gameSeconds = gameTime.asSeconds();
 
+        //loop to progress moles
         if (gameSeconds - oldTime >= .10) {
             oldTime = gameSeconds;
             spawnTick += .10;
@@ -356,6 +372,8 @@ void game_one (){
                 moleList[i].add_uptime();
             }
         }
+
+        //loop to spawn moles
         if (spawnTick >= 1) {
             spawnTick = 0;
             moleList.push_back(temp_mole);
@@ -364,13 +382,14 @@ void game_one (){
             moleList[moleList.size() - 1].set_position_random((int) window.getSize().x, (int) window.getSize().y);
         }
 
+        //loop to delete moles
         for (int i = 0; i < moleList.size(); i++) {
             if (moleList[i].get_uptime() >= 18) {
                 moleList.erase(moleList.begin() + i);
             }
         }
-        //outputting frame
-        if (gameSeconds <= 10) {
+        //outputting frame for gameplay
+        if (gameSeconds <= 30) {
             window.clear();
             window.setView(view);
             window.draw(sprite);
@@ -384,8 +403,11 @@ void game_one (){
             window.display();
             finalScore = score / gameSeconds;
         }
+        //outputting endgame frame
         else {
             window.clear();
+
+            //amateur text output
             sf::Text amateur;
             amateur.setFont(font);
             amateur.setCharacterSize(fontSize);
@@ -394,6 +416,7 @@ void game_one (){
             amateur.setOrigin(amateurRect.left + amateurRect.width/2.0f, amateurRect.top  + amateurRect.height/2.0f);
             amateur.setPosition((float) window.getSize().x/2, (float) window.getSize().y/30);
 
+            //above average text output
             sf::Text aboveAverage;
             aboveAverage.setFont(font);
             aboveAverage.setCharacterSize(fontSize);
@@ -402,6 +425,7 @@ void game_one (){
             aboveAverage.setOrigin(aboveAverageRect.left + aboveAverageRect.width/2.0f, aboveAverageRect.top  + aboveAverageRect.height/2.0f);
             aboveAverage.setPosition((float) window.getSize().x/2, (float) window.getSize().y/10);
 
+            //professional text output
             sf::Text professional;
             professional.setFont(font);
             professional.setCharacterSize(fontSize);
@@ -410,6 +434,7 @@ void game_one (){
             professional.setOrigin(professionalRect.left + professionalRect.width/2.0f, professionalRect.top  + professionalRect.height/2.0f);
             professional.setPosition((float) window.getSize().x/2, (float) window.getSize().y/6);
 
+            //letting user know how they performed
             if (finalScore >= 2.0) {
                 professional.setStyle(sf::Text::Bold | sf::Text::Underlined);
             }
@@ -419,7 +444,6 @@ void game_one (){
             else {
                 amateur.setStyle(sf::Text::Bold | sf::Text::Underlined);
             }
-            std::cout << (finalScore) << "\n";
             window.setView(view);
             window.draw(amateur);
             window.draw(aboveAverage);
