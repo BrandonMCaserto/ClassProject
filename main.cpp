@@ -239,6 +239,7 @@ void game_one (){
     music.setLoop(true);
     music.play();
     std::vector <Mole> moleList;
+    int score = 0;
 
     int windowX = 1000;
     int windowY = 1000;
@@ -268,6 +269,16 @@ void game_one (){
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
     text.setPosition((float) window.getSize().x/5, (float) window.getSize().y/25);
+
+    sf::Text scoreText;
+    scoreText.setFont(font);
+    scoreText.setCharacterSize(fontSize);
+    //scoreText.setFillColor(sf::Color::Black);
+    scoreText.setStyle(sf::Text::Bold | sf::Text::Underlined);
+    scoreText.setString("Score: " + std::to_string(trunc(score)));
+    sf::FloatRect scoreRect = scoreText.getLocalBounds();
+    scoreText.setOrigin(scoreRect.left + scoreRect.width/2.0f, scoreRect.top  + scoreRect.height/2.0f);
+    scoreText.setPosition((float) window.getSize().x/5, (float) window.getSize().y/10);
 
     //program loop to keep window open as game is being played
     gameTime = clock.getElapsedTime();
@@ -329,15 +340,14 @@ void game_one (){
                     int y_location = yGenerator(mt);
                     //moleList[i].set_position_random((int) window.getSize().x, (int) window.getSize().x);
                     moleList.erase(moleList.begin() + i);
+                    score += 1;
                 }
             }
         }
 
         gameTime = clock.getElapsedTime();
         gameSeconds = gameTime.asSeconds();
-        if (gameSeconds >= 60) {
-            window.close();;
-        }
+
         if (gameSeconds - oldTime >= .10) {
             oldTime = gameSeconds;
             spawnTick += .10;
@@ -359,14 +369,59 @@ void game_one (){
             }
         }
         //outputting frame
-        window.clear();
-        window.setView(view);
-        window.draw(sprite);
-        for (auto mole :moleList) {
-            window.draw(mole.get_sprite());
+        if (gameSeconds <= 5) {
+            window.clear();
+            window.setView(view);
+            window.draw(sprite);
+            for (auto mole :moleList) {
+                window.draw(mole.get_sprite());
+            }
+            text.setString("Timer: " + std::to_string(trunc(gameSeconds)));
+            scoreText.setString("Score: " + std::to_string(trunc(score)));
+            window.draw(text);
+            window.draw(scoreText);
+            window.display();
         }
-        text.setString("Timer: " + std::to_string(trunc(gameSeconds)));
-        window.draw(text);
-        window.display();
+        else {
+            window.clear();
+            sf::Text amateur;
+            amateur.setFont(font);
+            amateur.setCharacterSize(fontSize);
+            amateur.setString("Amateur");
+            sf::FloatRect amateurRect = text.getLocalBounds();
+            amateur.setOrigin(amateurRect.left + amateurRect.width/2.0f, amateurRect.top  + amateurRect.height/2.0f);
+            amateur.setPosition((float) window.getSize().x/2, (float) window.getSize().y/30);
+
+            sf::Text aboveAverage;
+            aboveAverage.setFont(font);
+            aboveAverage.setCharacterSize(fontSize);
+            aboveAverage.setString("Above Average");
+            sf::FloatRect aboveAverageRect = text.getLocalBounds();
+            aboveAverage.setOrigin(aboveAverageRect.left + aboveAverageRect.width/2.0f, aboveAverageRect.top  + aboveAverageRect.height/2.0f);
+            aboveAverage.setPosition((float) window.getSize().x/2, (float) window.getSize().y/10);
+
+            sf::Text professional;
+            professional.setFont(font);
+            professional.setCharacterSize(fontSize);
+            professional.setString("Professional");
+            sf::FloatRect professionalRect = text.getLocalBounds();
+            professional.setOrigin(professionalRect.left + professionalRect.width/2.0f, professionalRect.top  + professionalRect.height/2.0f);
+            professional.setPosition((float) window.getSize().x/2, (float) window.getSize().y/6);
+
+            if (score / gameSeconds >= 1) {
+                professional.setStyle(sf::Text::Bold | sf::Text::Underlined);
+            }
+            else if (score / gameSeconds >= 1.5) {
+                aboveAverage.setStyle(sf::Text::Bold | sf::Text::Underlined);
+            }
+            else {
+                amateur.setStyle(sf::Text::Bold | sf::Text::Underlined);
+            }
+            window.setView(view);
+            window.draw(amateur);
+            window.draw(aboveAverage);
+            window.draw(professional);
+            window.display();
+        }
     }
 };
