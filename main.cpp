@@ -240,6 +240,7 @@ void game_one (){
     music.play();
     std::vector <Mole> moleList;
     int score = 0;
+    double finalScore = 0.0;
 
     int windowX = 1000;
     int windowY = 1000;
@@ -369,7 +370,7 @@ void game_one (){
             }
         }
         //outputting frame
-        if (gameSeconds <= 5) {
+        if (gameSeconds <= 10) {
             window.clear();
             window.setView(view);
             window.draw(sprite);
@@ -381,6 +382,7 @@ void game_one (){
             window.draw(text);
             window.draw(scoreText);
             window.display();
+            finalScore = score / gameSeconds;
         }
         else {
             window.clear();
@@ -408,15 +410,16 @@ void game_one (){
             professional.setOrigin(professionalRect.left + professionalRect.width/2.0f, professionalRect.top  + professionalRect.height/2.0f);
             professional.setPosition((float) window.getSize().x/2, (float) window.getSize().y/6);
 
-            if (score / gameSeconds >= 1) {
+            if (finalScore >= 2.0) {
                 professional.setStyle(sf::Text::Bold | sf::Text::Underlined);
             }
-            else if (score / gameSeconds >= 1.5) {
+            else if (finalScore >= 1.5) {
                 aboveAverage.setStyle(sf::Text::Bold | sf::Text::Underlined);
             }
             else {
                 amateur.setStyle(sf::Text::Bold | sf::Text::Underlined);
             }
+            std::cout << (finalScore) << "\n";
             window.setView(view);
             window.draw(amateur);
             window.draw(aboveAverage);
