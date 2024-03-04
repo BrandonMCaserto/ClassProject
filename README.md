@@ -7,4 +7,6 @@ Project Reason:
   to aim trainers to improve your flicks and cordination with mouse movements.
 List of Maintainers:
   -BrandonMCaserto
-  [![OpenSSF Scorecard](htt‌ps://api.securityscorecards.dev/projects/github.com/BrandonMCaserto/ClassProject/badge)](htt‌ps://securityscorecards.dev/viewer/?uri=github.com/BrandonMCaserto/ClassProject)
+  
+  [![OpenSSF Scorecard](htt‌ps://api.securityscorecards.dev/projects/github.com/BrandonMCaserto/ClassProject/badge)]
+  (htt‌ps://securityscorecards.dev/viewer/?uri=github.com/BrandonMCaserto/ClassProject)
