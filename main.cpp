@@ -425,7 +425,7 @@ void game_one (){
             aboveAverage.setOrigin(aboveAverageRect.left + aboveAverageRect.width/2.0f, aboveAverageRect.top  + aboveAverageRect.height/2.0f);
             aboveAverage.setPosition((float) window.getSize().x/2, (float) window.getSize().y/10);
 
-            //professional text output
+            //professional text output true
             sf::Text professional;
             professional.setFont(font);
             professional.setCharacterSize(fontSize);
